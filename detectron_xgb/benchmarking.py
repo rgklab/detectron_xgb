@@ -4,9 +4,9 @@ import numpy as np
 import xgboost as xgb
 from tqdm import tqdm
 
-from defaults import XGB_PARAMS
-from utils.data import XGBDetectronDataModule, XGBDetectronRecord
-from utils.training import EarlyStopper
+from .defaults import XGB_PARAMS
+from .utils.data import XGBDetectronDataModule, XGBDetectronRecord
+from .utils.training import EarlyStopper
 
 
 def detectron_test_statistics(
@@ -104,22 +104,22 @@ def detectron_test_statistics(
     return record
 
 
-def detectron_dis_power(calibration_result: XGBDetectronRecord,
+def detectron_dis_power(calibration_record: XGBDetectronRecord,
                         test_record: XGBDetectronRecord,
                         alpha=0.05,
                         max_ensemble_size=None):
     """
     Compute the discovery power of the detectron algorithm.
-    :param calibration_result: (XGBDetectronRecord) the results of the calibration run
+    :param calibration_record: (XGBDetectronRecord) the results of the calibration run
     :param test_record: (XGBDetectronRecord) the results of the test run
     :param alpha: (0.05) the significance level
     :param max_ensemble_size: (None) the maximum number of models in the ensemble to consider.
         If None, all models are considered.
     :return: the discovery power
     """
-    cal_counts = calibration_result.counts(max_ensemble_size=max_ensemble_size)
+    cal_counts = calibration_record.counts(max_ensemble_size=max_ensemble_size)
     test_counts = test_record.counts(max_ensemble_size=max_ensemble_size)
-    N = calibration_result.sample_size
+    N = calibration_record.sample_size
     assert N == test_record.sample_size, 'The sample sizes of the calibration and test runs must be the same'
 
     fpr = (cal_counts <= np.arange(0, N + 2)[:, None]).mean(1)
@@ -137,4 +137,6 @@ def detectron_dis_power(calibration_result: XGBDetectronRecord,
     else:  # use linear interpolation if there is no threshold at alpha
         tpr_at_alpha = (tpr_high - tpr_low) / (fpr_high - fpr_low) * (alpha - fpr_low) + tpr_low
 
-    return dict(tpr=tpr_at_alpha, auc=np.trapz(tpr, fpr))
+    return dict(power=tpr_at_alpha, auc=np.trapz(tpr, fpr), N=N)
+
+# def detectron_dis_power_curve(train, val, iid_test, ood_test)

@@ -102,7 +102,7 @@ class XGBDetectronRecord:
         counts = []
         for i in rec.seed.unique():
             run = rec.query(f'seed=={i}')
-            if max_ensemble_size != -1:
+            if max_ensemble_size is not None:
                 run = run.iloc[:max_ensemble_size + 1]
             counts.append(run.iloc[-1]['count'])
         return np.array(counts)
