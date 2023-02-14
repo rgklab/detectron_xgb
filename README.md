@@ -27,7 +27,7 @@ We provide a complete example of each use case below.
 
 # TODO
 
-## Benchmarking Example: Covariate Shift Detection Power Scaling with Synthetic Data
+### Benchmarking Example: Covariate Shift Detection Power Scaling with Synthetic Data
 
 Here we demonstrate the scaling behaviour of detectron xgb on synthetic data.
 
