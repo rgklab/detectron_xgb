@@ -99,9 +99,8 @@ print(res_hungary)
 `detectron_xgb` assigns a p-value of 0.9 to the observation set, indicating that the model is in likely safe to use on
 data from the Hungarian Institute of Cardiology, Budapest.
 
-Finally let us quickly valid the decisions made by `detectron_xgb` by computing the real changes in performance of the
-model
-using labeled data from each institution.
+Finally, let's validate the decisions made by `detectron_xgb` by computing the real changes in performance of the
+model using labeled data from each institution.
 
 ```python
 def eval_model(model, data):
