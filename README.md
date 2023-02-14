@@ -9,13 +9,25 @@ along with the [research codebase](https://github.com/rgklab/detectron).
 
 ## Installation
 
+Install the `detectron_xgb` package using pip.
+
 ```bash
 pip install git+https://github.com/rgklab/detectron_xgb.git
 ```
 
 ## Usage
 
-## Example: Covariate Shift Detection with Synthetic Data
+`detectron_xgb` is separated into a benchmarking and inference module.
+The benchmarking module is designed primarily for researchers to benchmark the performance of the method on their own
+data.
+The inference module is designed for practitioners to use the method in their own applications.
+We provide a complete example of each use case below.
+
+### Inference Example: Detecting Covariate Shift in a Production Model
+
+# TODO
+
+## Benchmarking Example: Covariate Shift Detection Power Scaling with Synthetic Data
 
 Here we demonstrate the scaling behaviour of detectron xgb on synthetic data.
 
@@ -101,11 +113,11 @@ Please use the following citation if you use this code or methods in your own wo
 
 ```bibtex
 @inproceedings{
-  ginsberg2023a,
-  title={A Learning Based Hypothesis Test for Harmful Covariate Shift},
-  author={Tom Ginsberg and Zhongyuan Liang and Rahul G Krishnan},
-  booktitle={The Eleventh International Conference on Learning Representations },
-  year={2023},
-  url={https://openreview.net/forum?id=rdfgqiwz7lZ}
+ginsberg2023a,
+    title = {A Learning Based Hypothesis Test for Harmful Covariate Shift},
+    author = {Tom Ginsberg and Zhongyuan Liang and Rahul G Krishnan},
+    booktitle = {The Eleventh International Conference on Learning Representations },
+    year = {2023},
+    url = {https://openreview.net/forum?id=rdfgqiwz7lZ}
 }
 ```
