@@ -10,7 +10,7 @@ pip install git+https://github.com/rgklab/detectron_xgb.git
 
 ## Usage
 
-## Example: Covariate Shift with Synthetic Data
+## Example: Covariate Shift Detection with Synthetic Data
 
 Here we demonstrate the scaling behaviour of detectron xgb on synthetic data.
 
