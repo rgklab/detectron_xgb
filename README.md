@@ -85,7 +85,4 @@ for sample_size in [10, 20, 40, 50, 100, 200]:
 df = pd.DataFrame(res)
 sns.lineplot(data=df, x='N', y='power')
 ```
-
-<p align="center">
-<img src="media/power_curve.svg">
-</p>
+![](media/power_curve.svg)
