@@ -62,13 +62,13 @@ class XGBDetectronRecord:
         self._seed = seed
         self.idx = 0
 
-    def update(self, q_labeled, val_data, sample_size, model,
-               q_pseudo_probabilities=None):
+    def update(self, val_data, sample_size, model,
+               q_pseudo_probabilities=None, q_labeled=None):
         assert self._seed is not None, 'Seed must be set before updating the record'
         self.record.append({
             'ensemble_idx': self.idx,
             'val_auc': float(model.eval(val_data).split(':')[1]),
-            'test_auc': float(model.eval(q_labeled).split(':')[1]),
+            'test_auc': float(model.eval(q_labeled).split(':')[1]) if q_labeled is not None else float('nan'),
             'rejection_rate': 1 - sample_size / self.sample_size,
             'test_probabilities': q_pseudo_probabilities if q_pseudo_probabilities is not None else model.predict(
                 q_labeled),
