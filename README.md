@@ -1,6 +1,11 @@
 ![](media/logo.png)
----
+___
 Robust and Highly Sensitive Covariate Shift Detection using XGBoost
+---
+For more information on the method, please refer to the
+paper [A Learning Based Hypothesis Test for Harmful Covariate Shift
+](https://arxiv.org/abs/2212.02742)
+along with the [research codebase](https://github.com/rgklab/detectron).
 
 ## Installation
 
@@ -85,6 +90,22 @@ for sample_size in [10, 20, 40, 50, 100, 200]:
 df = pd.DataFrame(res)
 sns.lineplot(data=df, x='N', y='power')
 ```
+
 <p align="center">
   <img src="media/power_curve.svg" alt="Power Curve"/>
 </p>
+
+## Citation
+
+Please use the following citation if you use this code or methods in your own work.
+
+```bibtex
+@inproceedings{
+  ginsberg2023a,
+  title={A Learning Based Hypothesis Test for Harmful Covariate Shift},
+  author={Tom Ginsberg and Zhongyuan Liang and Rahul G Krishnan},
+  booktitle={The Eleventh International Conference on Learning Representations },
+  year={2023},
+  url={https://openreview.net/forum?id=rdfgqiwz7lZ}
+}
+```
