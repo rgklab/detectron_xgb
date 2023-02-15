@@ -73,8 +73,8 @@ print(res)
 # DetectronResult(p_value=0.07, test_statistic=11, baseline=14.64±2.26)
 ```
 
-`detectron_xgb` assigns a p-value of 0.07 to the observation set, indicating that the model is still valid for use on
-data from the V.A. Medical Center, Long Beach, CA, USA.
+`detectron_xgb` assigns a p-value of 7% to the observation set, indicating that the model is likely not valid for use on
+data from the V.A. Medical Center, Long Beach, CA, USA. 
 
 We can also try the same experiment with the Hungarian Institute of Cardiology, Budapest data.
 Note that the `detectron_xgb` inference model allows us to bypass the costly calibration step by passing in the
