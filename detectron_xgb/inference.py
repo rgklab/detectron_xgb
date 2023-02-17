@@ -12,6 +12,12 @@ from .utils.data import XGBDetectronRecord
 
 
 def ecdf(x):
+    """
+    Compute the empirical cumulative distribution function
+    :param x: array of 1-D numerical data
+    :return: a function that takes a value and returns the probability that
+        a random sample from x is less than or equal to that value
+    """
     x = np.sort(x)
 
     def result(v):
@@ -21,7 +27,15 @@ def ecdf(x):
 
 
 class DetectronResult:
+    """
+    A class to store the results of a Detectron test
+    """
+
     def __init__(self, cal_record: XGBDetectronRecord, test_record: XGBDetectronRecord):
+        """
+        :param cal_record: Result of running benchmarking.detectron_test_statistics using IID test data
+        :param test_record: Result of running benchmarking.detectron_test_statistics using the unknown test data
+        """
         self.cal_record = cal_record
         self.test_record = test_record
 
@@ -49,7 +63,7 @@ def detectron(train: tuple[np.ndarray, np.ndarray],
               observation_data: np.ndarray,
               base_model: xgb.Booster,
               iid_test: Optional[tuple[np.ndarray, np.ndarray]] = None,
-              calibration_record: Optional[XGBDetectronRecord] = None,
+              calibration_record: Optional[XGBDetectronRecord | DetectronResult] = None,
               xgb_params=XGB_PARAMS,
               ensemble_size=10,
               num_calibration_runs=100,
@@ -57,6 +71,30 @@ def detectron(train: tuple[np.ndarray, np.ndarray],
               patience=3,
               balance_train_classes=True
               ):
+    """
+    Perform a Detectron test on a model, using the given data
+    :param train: the original split used to train the model
+    :param val: the original split used to validate the model
+    :param observation_data:
+    :param base_model: the base model to use for the pseudo-labeling, this should be a trained XGBoost model
+    :param iid_test: An unseen test set that is assumed to be i.i.d. with the training data, used for calibration.
+    Note this set can be none, in which case the calibration_record must be provided
+    :param calibration_record: The result of running detectron or benchmarking.detectron_test_statistics on iid_test.
+    Note this set can be none, in which case the iid_test must be provided.
+    The calibration data can be collected from a previous detectron run. See the example #1 in
+    the README for more details.
+    :param xgb_params: (defaults.XGB_PARAMS) Parameters to pass to xgboost.train, see
+    https://xgboost.readthedocs.io/en/latest/parameter.html
+    :param ensemble_size: (10) number of models trained to disagree with each-other.
+    Typically, a value of 5-10 is sufficient, but larger values may be required for very large datasets
+    :param num_calibration_runs: (100) the number of different random runs to perform,
+        each run operates on a random sample from test
+    :param num_boost_round: (10) xgb parameter for the number of boosting rounds
+    :param patience: (3) number of ensemble rounds to wait without improvement in the rejection rate
+    :param balance_train_classes: (True) If True, the training data will be automatically balanced using weights.
+    Disable only if your data is already class balanced.
+    :return: DetectronResult object containing the results of the test.
+    """
     obs_size = len(observation_data)
     obs_labels = np.zeros(obs_size)
 
@@ -76,6 +114,8 @@ def detectron(train: tuple[np.ndarray, np.ndarray],
     else:
         if calibration_record is None:
             raise ValueError("If iid_test is not provided, calibration_record must be provided")
+        if isinstance(calibration_record, DetectronResult):
+            calibration_record = calibration_record.cal_record
         assert calibration_record.sample_size == obs_size, \
             "The calibration record must have been generated with the same sample size as the observation set"
         cal_record = calibration_record
