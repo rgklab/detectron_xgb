@@ -170,6 +170,10 @@ print(bst.eval(xgb.DMatrix(*ood_test), name='ood_test'))
 # [0]	ood_test-auc:0.86246599999999995
 ```
 
+Plotting the training dataset as well as the decision boundary of the trained model. We can see that this model 
+only represents one possible solution out of many that could fit the training set well.
+![](media/moons.svg)
+
 Use the `dxgb` benchmarking module to compute the test power for various increasing sample sizes and plot the resulting
 power curve.
 
